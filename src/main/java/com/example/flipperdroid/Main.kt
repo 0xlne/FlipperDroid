@@ -32,6 +32,10 @@ import com.example.flipperdroid.viewmodel.BleSpamViewModel
 import com.example.flipperdroid.view.BleSpamScreen
 import com.example.flipperdroid.viewmodel.BluetoothViewModel
 import com.example.flipperdroid.view.LegalTextScreen
+import com.example.flipperdroid.viewmodel.ThemeViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 
 class MainActivity : ComponentActivity() {
 
@@ -43,6 +47,7 @@ class MainActivity : ComponentActivity() {
     private val emvCardEmulationViewModel: EmvCardEmulationViewModel by viewModels()
     private val emvReaderViewModel: EmvReaderViewModel by viewModels()
     private val bleSpamViewModel: BleSpamViewModel by viewModels()
+    private val themeViewModel: ThemeViewModel by viewModels()
     private var nfcAdapter: NfcAdapter? = null
     private lateinit var pendingIntent: PendingIntent
     private lateinit var intentFiltersArray: Array<IntentFilter>
@@ -100,8 +105,9 @@ class MainActivity : ComponentActivity() {
         bluetoothViewModel.initialize(this)
 
         setContent {
-            FlipperDroidTheme {
-                AppNavigation()
+            val isDarkMode by themeViewModel.isDarkMode.collectAsState()
+            FlipperDroidTheme(darkTheme = isDarkMode) {
+                AppNavigation(themeViewModel)
             }
         }
         handleNfcIntent(intent)
@@ -192,7 +198,7 @@ class MainActivity : ComponentActivity() {
      */
     @SuppressLint("ComposableDestinationInComposeScope")
     @Composable
-    fun AppNavigation() {
+    fun AppNavigation(themeViewModel: ThemeViewModel) {
         val navController = rememberNavController()
 
         NavHost(navController = navController, startDestination = "home") {
@@ -221,7 +227,7 @@ class MainActivity : ComponentActivity() {
                 PasswordGeneratorScreen(navController = navController)
             }
             composable("settings") {
-                SettingsScreen(navController = navController)
+                SettingsScreen(navController = navController, themeViewModel = themeViewModel)
             }
             composable("about") {
                 AboutScreen(navController = navController)

@@ -11,6 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.flipperdroid.viewmodel.ThemeViewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+import androidx.compose.ui.platform.LocalContext
 /**
  * Affiche l ecran des parametres avec plusieurs sections configurables
  *
@@ -21,8 +28,8 @@ import androidx.navigation.NavController
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreen(navController: NavController) {
-    var darkMode by remember { mutableStateOf(true) }
+fun SettingsScreen(navController: NavController, themeViewModel: ThemeViewModel) {
+    val darkMode by themeViewModel.isDarkMode.collectAsState()
     var notifications by remember { mutableStateOf(true) }
     var keepScreenOn by remember { mutableStateOf(false) }
     var vibrationEnabled by remember { mutableStateOf(true) }
@@ -60,61 +67,16 @@ fun SettingsScreen(navController: NavController) {
                 Card(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column {
-                        ListItem(
-                            headlineContent = { Text("Dark Mode") },
-                            supportingContent = { Text("Enable dark theme") },
-                            leadingContent = {
-                                Icon(Icons.Default.DarkMode, contentDescription = null)
-                            },
-                            trailingContent = {
-                                Switch(
-                                    checked = darkMode,
-                                    onCheckedChange = { darkMode = it }
-                                )
-                            }
-                        )
-
-                        ListItem(
-                            headlineContent = { Text("Keep Screen On") },
-                            supportingContent = { Text("Prevent screen from turning off") },
-                            leadingContent = {
-                                Icon(Icons.Default.Visibility, contentDescription = null)
-                            },
-                            trailingContent = {
-                                Switch(
-                                    checked = keepScreenOn,
-                                    onCheckedChange = { keepScreenOn = it }
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-
-            item {
-                Text(
-                    "Notifications",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
-
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
                     ListItem(
-                        headlineContent = { Text("Push Notifications") },
-                        supportingContent = { Text("Enable notifications") },
+                        headlineContent = { Text("Dark Mode") },
+                        supportingContent = { Text("Enable dark theme") },
                         leadingContent = {
-                            Icon(Icons.Default.Notifications, contentDescription = null)
+                            Icon(Icons.Default.DarkMode, contentDescription = null)
                         },
                         trailingContent = {
                             Switch(
-                                checked = notifications,
-                                onCheckedChange = { notifications = it }
+                                checked = darkMode,
+                                onCheckedChange = { themeViewModel.setDarkMode(it) }
                             )
                         }
                     )
@@ -123,7 +85,7 @@ fun SettingsScreen(navController: NavController) {
 
             item {
                 Text(
-                    "Feedback",
+                    "Help & Support",
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.padding(vertical = 8.dp)
@@ -134,78 +96,24 @@ fun SettingsScreen(navController: NavController) {
                 Card(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Column {
-                        ListItem(
-                            headlineContent = { Text("Vibration") },
-                            supportingContent = { Text("Enable haptic feedback") },
-                            leadingContent = {
-                                Icon(Icons.Default.Vibration, contentDescription = null)
-                            },
-                            trailingContent = {
-                                Switch(
-                                    checked = vibrationEnabled,
-                                    onCheckedChange = { vibrationEnabled = it }
-                                )
-                            }
-                        )
-
-                        ListItem(
-                            headlineContent = { Text("Sound") },
-                            supportingContent = { Text("Enable sound effects") },
-                            leadingContent = {
-                                Icon(Icons.AutoMirrored.Filled.VolumeUp, contentDescription = null)
-                            },
-                            trailingContent = {
-                                Switch(
-                                    checked = soundEnabled,
-                                    onCheckedChange = { soundEnabled = it }
-                                )
-                            }
-                        )
-                    }
-                }
-            }
-
-            item {
-                Text(
-                    "Storage",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
-
-            item {
-                Card(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Column {
-                        ListItem(
-                            headlineContent = { Text("Clear Cache") },
-                            supportingContent = { Text("Delete temporary files") },
-                            leadingContent = {
-                                Icon(Icons.Default.Delete, contentDescription = null)
-                            },
-                            trailingContent = {
-                                IconButton(onClick = { /* TODO cache clearing */ }) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Clear")
+                    val context = LocalContext.current
+                    ListItem(
+                        headlineContent = { Text("Manage permissions") },
+                        supportingContent = { Text("Open system settings to manage the app's permissions.") },
+                        leadingContent = {
+                            Icon(Icons.Default.Settings, contentDescription = null)
+                        },
+                        trailingContent = {
+                            IconButton(onClick = {
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                                    data = Uri.fromParts("package", context.packageName, null)
                                 }
+                                context.startActivity(intent)
+                            }) {
+                                Icon(Icons.Default.OpenInNew, contentDescription = "Open")
                             }
-                        )
-
-                        ListItem(
-                            headlineContent = { Text("Export Data") },
-                            supportingContent = { Text("Backup your data") },
-                            leadingContent = {
-                                Icon(Icons.Default.Save, contentDescription = null)
-                            },
-                            trailingContent = {
-                                IconButton(onClick = { /* TODO data export */ }) {
-                                    Icon(Icons.Default.Download, contentDescription = "Export")
-                                }
-                            }
-                        )
-                    }
+                        }
+                    )
                 }
             }
         }

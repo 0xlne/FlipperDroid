@@ -58,13 +58,13 @@ fun NfcScreen(
             // Section Lecture
             Card(Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
                 Column(Modifier.padding(16.dp)) {
-                    Text("Lecture de carte", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("Card Reading", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(8.dp))
-                    Text("UID : ${currentTagUid ?: "-"}")
-                    Text("Type : ${currentTagType ?: "-"}")
+                    Text("UID: ${currentTagUid ?: "-"}")
+                    Text("Type: ${currentTagType ?: "-"}")
                     if (currentTagDump.isNotEmpty()) {
                         Spacer(Modifier.height(8.dp))
-                        Text("Dump :", fontWeight = FontWeight.Bold)
+                        Text("Dump:", fontWeight = FontWeight.Bold)
                         LazyColumn(Modifier.heightIn(max = 200.dp)) {
                             items(currentTagDump.size) { i ->
                                 Text(currentTagDump[i], fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace)
@@ -73,7 +73,7 @@ fun NfcScreen(
                         Button(onClick = { nfcViewModel.onDumpExport() }, Modifier.padding(top = 8.dp)) {
                             Icon(Icons.Default.Save, contentDescription = "Export")
                             Spacer(Modifier.width(4.dp))
-                            Text("Exporter le dump")
+                            Text("Export dump")
                         }
                     }
                 }
@@ -81,17 +81,17 @@ fun NfcScreen(
             // Section Clonage
             Card(Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
                 Column(Modifier.padding(16.dp)) {
-                    Text("Clonage UID", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text("UID Cloning", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = cloneUid,
                         onValueChange = { cloneUid = it },
-                        label = { Text("Nouvel UID") },
+                        label = { Text("New UID") },
                         singleLine = true,
                         modifier = Modifier.fillMaxWidth()
                     )
                     Button(onClick = { nfcViewModel.onCloneUid(cloneUid) }, Modifier.padding(top = 8.dp)) {
-                        Text("Cloner UID sur carte")
+                        Text("Clone UID to card")
                     }
                 }
             }
@@ -106,7 +106,7 @@ fun NfcScreen(
                             }
                         }
                         Button(onClick = { nfcViewModel.clearLogs() }, Modifier.padding(top = 8.dp)) {
-                            Text("Effacer les logs")
+                            Text("Clear logs")
                         }
                     }
                 }
@@ -115,7 +115,7 @@ fun NfcScreen(
             if (showHistory) {
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp)) {
-                        Text("Historique des scans", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                        Text("Scan History", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         LazyColumn(Modifier.heightIn(max = 150.dp)) {
                             items(scanHistory.size) { i ->
                                 val scan = scanHistory[scanHistory.size - 1 - i]

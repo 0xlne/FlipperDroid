@@ -69,9 +69,9 @@ fun PasswordGeneratorScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text("Génère un mot de passe sécurisé et copie-le dans le presse-papier.", style = MaterialTheme.typography.bodyLarge)
+            Text("Generate a secure password and copy it to the clipboard.", style = MaterialTheme.typography.bodyLarge)
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("Longueur : $length", modifier = Modifier.weight(1f))
+                Text("Length: $length", modifier = Modifier.weight(1f))
                 Slider(
                     value = length.toFloat(),
                     onValueChange = { length = it.toInt() },
@@ -82,27 +82,27 @@ fun PasswordGeneratorScreen(navController: NavController) {
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = useUpper, onCheckedChange = { useUpper = it })
-                Text("Majuscules", modifier = Modifier.weight(1f))
+                Text("Uppercase", modifier = Modifier.weight(1f))
                 Checkbox(checked = useLower, onCheckedChange = { useLower = it })
-                Text("Minuscules", modifier = Modifier.weight(1f))
+                Text("Lowercase", modifier = Modifier.weight(1f))
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(checked = useDigits, onCheckedChange = { useDigits = it })
-                Text("Chiffres", modifier = Modifier.weight(1f))
+                Text("Digits", modifier = Modifier.weight(1f))
                 Checkbox(checked = useSymbols, onCheckedChange = { useSymbols = it })
-                Text("Symboles", modifier = Modifier.weight(1f))
+                Text("Symbols", modifier = Modifier.weight(1f))
             }
             Button(onClick = {
                 password = generatePassword()
                 copied = false
             }) {
-                Text("Générer")
+                Text("Generate")
             }
             if (password.isNotEmpty()) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = {},
-                    label = { Text("Mot de passe généré") },
+                    label = { Text("Generated password") },
                     readOnly = true,
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -114,7 +114,7 @@ fun PasswordGeneratorScreen(navController: NavController) {
                 }) {
                     Icon(Icons.Default.ContentCopy, contentDescription = null)
                     Spacer(Modifier.width(8.dp))
-                    Text(if (copied) "Copié !" else "Copier")
+                    Text(if (copied) "Copied!" else "Copy")
                 }
                 // Génération et affichage du QR code sécurisé
                 Spacer(Modifier.height(16.dp))
@@ -123,13 +123,13 @@ fun PasswordGeneratorScreen(navController: NavController) {
                         try { generateQrCodeBitmap(password) } catch (_: Exception) { null }
                     }
                     if (qrBitmap != null) {
-                        Text("QR Code du mot de passe :", fontSize = 16.sp)
+                        Text("Password QR Code:", fontSize = 16.sp)
                         Image(bitmap = qrBitmap.asImageBitmap(), contentDescription = "QR Code", modifier = Modifier.size(200.dp))
                     } else {
-                        Text("Impossible de générer le QR code.", color = MaterialTheme.colorScheme.error)
+                        Text("Unable to generate QR code.", color = MaterialTheme.colorScheme.error)
                     }
                 } else {
-                    Text("Mot de passe trop long pour générer un QR code.", color = MaterialTheme.colorScheme.error)
+                    Text("Password too long to generate a QR code.", color = MaterialTheme.colorScheme.error)
                 }
             }
         }

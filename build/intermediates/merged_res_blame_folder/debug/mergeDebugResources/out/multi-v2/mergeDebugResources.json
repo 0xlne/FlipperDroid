@@ -3047,6 +3047,23 @@
                     }
                 },
                 {
+                    "source": "/home/kaliznoo/Documents/FlipperDroid/src/main/res/values/colors.xml",
+                    "from": {
+                        "startLines": "7,2,3,4,5,6,8",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "284,57,102,147,192,238,327",
+                        "endColumns": "41,43,43,43,44,44,41",
+                        "endOffsets": "321,96,141,186,232,278,364"
+                    },
+                    "to": {
+                        "startLines": "5,11,12,13,14,15,16",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "370,732,776,820,864,909,954",
+                        "endColumns": "41,43,43,43,44,44,41",
+                        "endOffsets": "407,771,815,859,904,949,991"
+                    }
+                },
+                {
                     "source": "/home/kaliznoo/.gradle/caches/8.11.1/transforms/325c613271512ff9ca88fc378ecb97ee/transformed/core-1.13.1/res/values/values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,98,99,103,104,105,106,112,122,155,176,209",
@@ -3155,6 +3172,23 @@
                     }
                 },
                 {
+                    "source": "/home/kaliznoo/Documents/FlipperDroid/src/main/res/values/ic_launcher_background.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "56",
+                        "endOffsets": "107"
+                    },
+                    "to": {
+                        "startLines": "8",
+                        "startColumns": "4",
+                        "startOffsets": "543",
+                        "endColumns": "56",
+                        "endOffsets": "595"
+                    }
+                },
+                {
                     "source": "/home/kaliznoo/.gradle/caches/8.11.1/transforms/058c76ecc2778bd3bdf256808f1ebffd/transformed/navigation-runtime-release/res/values/values.xml",
                     "from": {
                         "startLines": "2,3,10,13",
@@ -3171,23 +3205,6 @@
                         "endLines": "83,245,385,388",
                         "endColumns": "52,24,24,24",
                         "endOffsets": "5116,15473,20616,20731"
-                    }
-                },
-                {
-                    "source": "/tmp/FlipperDroid/src/main/res/values/strings.xml",
-                    "from": {
-                        "startLines": "1,2",
-                        "startColumns": "4,4",
-                        "startOffsets": "17,68",
-                        "endColumns": "49,76",
-                        "endOffsets": "62,140"
-                    },
-                    "to": {
-                        "startLines": "111,124",
-                        "startColumns": "4,4",
-                        "startOffsets": "6618,7523",
-                        "endColumns": "49,76",
-                        "endOffsets": "6663,7595"
                     }
                 },
                 {
@@ -3242,6 +3259,23 @@
                     }
                 },
                 {
+                    "source": "/home/kaliznoo/Documents/FlipperDroid/src/main/res/values/themes.xml",
+                    "from": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "56",
+                        "endColumns": "89",
+                        "endOffsets": "141"
+                    },
+                    "to": {
+                        "startLines": "236",
+                        "startColumns": "4",
+                        "startOffsets": "14946",
+                        "endColumns": "88",
+                        "endOffsets": "15030"
+                    }
+                },
+                {
                     "source": "/home/kaliznoo/.gradle/caches/8.11.1/transforms/e679516e4220e04ea4914a9617886ca3/transformed/navigation-common-release/res/values/values.xml",
                     "from": {
                         "startLines": "2,15,21,27,30",
@@ -3261,6 +3295,23 @@
                     }
                 },
                 {
+                    "source": "/home/kaliznoo/Documents/FlipperDroid/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "1,2",
+                        "startColumns": "4,4",
+                        "startOffsets": "17,68",
+                        "endColumns": "49,76",
+                        "endOffsets": "62,140"
+                    },
+                    "to": {
+                        "startLines": "111,124",
+                        "startColumns": "4,4",
+                        "startOffsets": "6618,7523",
+                        "endColumns": "49,76",
+                        "endOffsets": "6663,7595"
+                    }
+                },
+                {
                     "source": "/home/kaliznoo/.gradle/caches/8.11.1/transforms/d5657ba973d9ea74a4b651de1d468539/transformed/foundation-release/res/values/values.xml",
                     "from": {
                         "startLines": "2,3",
@@ -3275,57 +3326,6 @@
                         "startOffsets": "12791,12847",
                         "endColumns": "55,54",
                         "endOffsets": "12842,12897"
-                    }
-                },
-                {
-                    "source": "/tmp/FlipperDroid/src/main/res/values/themes.xml",
-                    "from": {
-                        "startLines": "3",
-                        "startColumns": "4",
-                        "startOffsets": "56",
-                        "endColumns": "89",
-                        "endOffsets": "141"
-                    },
-                    "to": {
-                        "startLines": "236",
-                        "startColumns": "4",
-                        "startOffsets": "14946",
-                        "endColumns": "88",
-                        "endOffsets": "15030"
-                    }
-                },
-                {
-                    "source": "/tmp/FlipperDroid/src/main/res/values/colors.xml",
-                    "from": {
-                        "startLines": "7,2,3,4,5,6,8",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "284,57,102,147,192,238,327",
-                        "endColumns": "41,43,43,43,44,44,41",
-                        "endOffsets": "321,96,141,186,232,278,364"
-                    },
-                    "to": {
-                        "startLines": "5,11,12,13,14,15,16",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "370,732,776,820,864,909,954",
-                        "endColumns": "41,43,43,43,44,44,41",
-                        "endOffsets": "407,771,815,859,904,949,991"
-                    }
-                },
-                {
-                    "source": "/tmp/FlipperDroid/src/main/res/values/ic_launcher_background.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "56",
-                        "endOffsets": "107"
-                    },
-                    "to": {
-                        "startLines": "8",
-                        "startColumns": "4",
-                        "startOffsets": "543",
-                        "endColumns": "56",
-                        "endOffsets": "595"
                     }
                 }
             ]

@@ -117,7 +117,7 @@ fun HomeScreen(
     }
 
     val features = listOf(
-        FeatureItem("NFC", Icons.Default.Nfc, "nfc"),
+        FeatureItem("NFC Reader", Icons.Default.Nfc, "nfc"),
         FeatureItem("BadUSB", Icons.Default.Usb, "badusb"),
         FeatureItem("Bluetooth", Icons.Default.Bluetooth, "bluetooth"),
         FeatureItem("Network Tools", Icons.Default.Router, "network"),

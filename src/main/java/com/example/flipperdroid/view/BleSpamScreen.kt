@@ -128,19 +128,19 @@ fun BleSpamScreen(
             Spacer(Modifier.height(16.dp))
             if (!permissionsGranted) {
                 Text(
-                    "Permissions Bluetooth requises pour utiliser le spam BLE.",
+                    "Bluetooth permissions are required to use BLE spam.",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Button(onClick = {
                     permissionLauncher.launch(permissions)
-                    if (!permissionsGranted) showSnackbar = "Permissions refusées. Impossible d'utiliser le spam BLE."
+                    if (!permissionsGranted) showSnackbar = "Permissions denied. Unable to use BLE spam."
                 }) {
-                    Text("Demander les permissions")
+                    Text("Request permissions")
                 }
                 return@Column
             }
-            Text("Sélectionnez les payloads à spammer :", style = MaterialTheme.typography.titleMedium)
+            Text("Select the payloads to spam:", style = MaterialTheme.typography.titleMedium)
             Spacer(Modifier.height(8.dp))
             LazyColumn(Modifier.weight(1f)) {
                 items(advertisementSets.size) { idx ->
@@ -166,48 +166,27 @@ fun BleSpamScreen(
                 }
             }
             Spacer(Modifier.height(16.dp))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                Button(
-                    onClick = {
-                        if (checkedStates.none { it }) {
-                            showSnackbar = "Sélectionnez au moins un payload."
-                            return@Button
-                        } else {
-                            viewModel.setCheckedPayloads(checkedStates.toList())
-                            viewModel.startSpam()
-                            showSnackbar = "Spam BLE démarré."
-                        }
-                    },
-                    enabled = !isActive && permissionsGranted
-                ) { Text("Démarrer le spam") }
-                Button(
-                    onClick = {
-                        viewModel.stopSpam()
-                        // Réinitialise la sélection après arrêt
-                        checkedStates.clear(); checkedStates.addAll(List(advertisementSets.size) { true })
-                        showSnackbar = "Spam BLE arrêté."
-                    },
-                    enabled = isActive && permissionsGranted
-                ) { Text("Arrêter") }
+            Button(
+                onClick = {
+                    viewModel.startSpam()
+                },
+                enabled = !isActive && checkedStates.any { it }
+            ) {
+                Text("Start Spam")
             }
-            if (showSnackbar != null) {
-                LaunchedEffect(showSnackbar) {
-                    val msg = showSnackbar
-                    showSnackbar = null
-                    msg?.let { snackbarHostState.showSnackbar(it) }
+            if (isActive) {
+                Button(
+                    onClick = { viewModel.stopSpam() },
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    Text("Stop Spam")
                 }
             }
             Spacer(Modifier.height(16.dp))
-            Text("Spams envoyés : ${spamLogs.size}", style = MaterialTheme.typography.bodyMedium)
-            Box(Modifier.weight(1f).fillMaxWidth().border(1.dp, Color.Gray).padding(4.dp)) {
-                val scrollState = rememberScrollState()
-                LaunchedEffect(spamLogs.size) {
-                    scrollState.animateScrollTo(scrollState.maxValue)
-                }
-                Column(Modifier.verticalScroll(scrollState)) {
-                    spamLogs.forEach { log ->
-                        Text(log, fontSize = 12.sp)
-                    }
+            Text("Spam logs:", style = MaterialTheme.typography.titleMedium)
+            LazyColumn(Modifier.weight(1f)) {
+                items(spamLogs.size) { idx ->
+                    Text(spamLogs[idx])
                 }
             }
         }
