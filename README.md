@@ -2,6 +2,8 @@
 
 **FlipperDroid** is an Android application developed in Kotlin, inspired by the well-known **Flipper Zero** device. It brings a powerful set of wireless and hardware security testing tools to Android smartphones, leveraging their native capabilities.
 
+![logo](https://github.com/Jeremiznoo/FlipperDroid/blob/main/src/main/ic_launcher-playstore.png)
+
 ---
 
 ## Overview
