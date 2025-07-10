@@ -16,6 +16,7 @@ import android.content.Context
 import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
+import java.net.InetSocketAddress
 
 
 data class NetworkResult(
@@ -43,7 +44,7 @@ class NetworkToolsViewModel : ViewModel() {
     private var context: Context? = null
 
     /**
-     * Initialise le ViewModel avec le contexte de l application
+     * Initialise le ViewModel avec le contexte de l'application
      */
     fun initialize(context: Context) {
         this.context = context.applicationContext
@@ -51,7 +52,7 @@ class NetworkToolsViewModel : ViewModel() {
 
     /**
      * Copie le binaire nmap depuis les assets vers le dossier interne si besoin, et le rend exécutable
-     * @return Chemin absolu du binaire nmap prêt à l emploi
+     * @return Chemin absolu du binaire nmap prêt à l'emploi
      */
     fun copyAssetToFile(context: Context, assetName: String, destFile: File): Boolean {
         return try {
@@ -62,14 +63,14 @@ class NetworkToolsViewModel : ViewModel() {
             }
             true
         } catch (e: Exception) {
-            Log.e("NMAP_COPY", "Erreur lors de la copie de l asset $assetName : ${e.message}")
+            Log.e("NMAP_COPY", "Erreur lors de la copie de l'asset $assetName : ${e.message}")
             false
         }
     }
 
     /**
      * Copie récursivement tout le contenu du dossier assets/nmap/ vers /data/local/tmp/nmap/
-     * @return Chemin absolu du dossier nmap prêt à l emploi
+     * @return Chemin absolu du dossier nmap prêt à l'emploi
      */
     fun copyNmapToTmp(context: Context): String {
         val nmapDir = File("/data/local/tmp")
@@ -78,7 +79,7 @@ class NetworkToolsViewModel : ViewModel() {
         try {
             // Suppression du dossier
             if (internalNmapDir.exists()) {
-                Log.d("NMAP_COPY", "Suppression de l ancien dossier nmap dans ${internalNmapDir.absolutePath}")
+                Log.d("NMAP_COPY", "Suppression de l'ancien dossier nmap dans ${internalNmapDir.absolutePath}")
                 deleteRecursively(internalNmapDir)
             }
             
@@ -113,7 +114,7 @@ class NetworkToolsViewModel : ViewModel() {
     }
     
     /**
-     * Copie récursivement tout le contenu d un dossier d assets vers un dossier de destination
+     * Copie récursivement tout le contenu d'un dossier d'assets vers un dossier de destination
      */
     private fun copyAssetsRecursively(context: Context, assetPath: String, destDir: File) {
         try {
@@ -182,7 +183,7 @@ class NetworkToolsViewModel : ViewModel() {
         file.delete()
     }
     /**
-     * Lance une commande ping vers l adresse ou nom d hote fourni
+     * Lance une commande ping vers l'adresse ou nom d'hote fourni
      *
      * Recupere la sortie de la commande et met a jour les résultats
      *
@@ -192,25 +193,32 @@ class NetworkToolsViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _isScanning.value = true
             try {
-                val process = Runtime.getRuntime().exec("ping -c 4 $host")
-                val reader = BufferedReader(InputStreamReader(process.inputStream))
                 val output = StringBuilder()
-                var line: String?
+                output.append("ping $host\n\n")
                 
-                while (reader.readLine().also { line = it } != null) {
-                    output.append(line).append("\n")
+                val startTime = System.currentTimeMillis()
+                val address = InetAddress.getByName(host)
+                val isReachable = address.isReachable(5000)
+                val endTime = System.currentTimeMillis()
+                val responseTime = endTime - startTime
+                
+                output.append("Adresse : ${address.hostAddress}\n")
+                
+                if (isReachable) {
+                    output.append("Temps de réponse : ${responseTime}ms\n")
+                } else {
+                    output.append("Hôte inaccessible\n")
                 }
                 
-                val exitCode = process.waitFor()
                 _results.value = _results.value + NetworkResult(
                     command = "ping $host",
                     output = output.toString(),
-                    isError = exitCode != 0
+                    isError = !isReachable
                 )
             } catch (e: Exception) {
                 _results.value = _results.value + NetworkResult(
                     command = "ping $host",
-                    output = e.message ?: "Error executing ping",
+                    output = "Erreur : ${e.message}",
                     isError = true
                 )
             } finally {
@@ -220,7 +228,7 @@ class NetworkToolsViewModel : ViewModel() {
     }
 
     /**
-     * Scan les ports entre startPort et endPort sur l hote fourni
+     * Scan les ports entre startPort et endPort sur l'hote fourni
      *
      * Detecte les ports ouverts et met a jour les résultats
      *
@@ -266,11 +274,11 @@ class NetworkToolsViewModel : ViewModel() {
         }
     }
     /**
-     * Effectue une recherche DNS pour l hote fourni
+     * Effectue une recherche DNS pour l'hote fourni
      *
      * Recupere les adresses associees et met a jour les résultats
      *
-     * @param host nom d hôte a rechercher
+     * @param host nom d'hôte a rechercher
      */
     fun dnsLookup(host: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -309,31 +317,58 @@ class NetworkToolsViewModel : ViewModel() {
      *
      * Recupere la sortie et met a jour les résultats
      *
-     * @param host adresse IP ou nom d hôte cible
+     * @param host adresse IP ou nom d'hôte cible
      */
     fun traceroute(host: String) {
         viewModelScope.launch(Dispatchers.IO) {
             _isScanning.value = true
             try {
-                val process = Runtime.getRuntime().exec("traceroute $host")
-                val reader = BufferedReader(InputStreamReader(process.inputStream))
                 val output = StringBuilder()
-                var line: String?
+                output.append("Traceroute vers $host\n\n")
                 
-                while (reader.readLine().also { line = it } != null) {
-                    output.append(line).append("\n")
+                val targetAddress = InetAddress.getByName(host)
+                output.append("Adresse cible : ${targetAddress.hostAddress}\n\n")
+                
+
+                val maxHops = 30
+                var reachedTarget = false
+                
+                for (ttl in 1..maxHops) {
+                    try {
+                        val socket = Socket()
+                        socket.setSoTimeout(1000)
+                        
+                        // Tentative de connection
+                        val startTime = System.currentTimeMillis()
+                        socket.connect(InetSocketAddress(targetAddress, 80), 1000)
+                        val endTime = System.currentTimeMillis()
+                        
+                        if (socket.isConnected) {
+                            output.append("$ttl: ${socket.localAddress.hostAddress} -> ${targetAddress.hostAddress} (${endTime - startTime}ms)\n")
+                            reachedTarget = true
+                            socket.close()
+                            break
+                        }
+                        
+                        socket.close()
+                    } catch (e: Exception) {
+                        output.append("$ttl: * * * (timeout)\n")
+                    }
                 }
                 
-                val exitCode = process.waitFor()
+                if (!reachedTarget) {
+                    output.append("Impossible d'atteindre la destination\n")
+                }
+                
                 _results.value = _results.value + NetworkResult(
                     command = "traceroute $host",
                     output = output.toString(),
-                    isError = exitCode != 0
+                    isError = !reachedTarget
                 )
             } catch (e: Exception) {
                 _results.value = _results.value + NetworkResult(
                     command = "traceroute $host",
-                    output = e.message ?: "Error executing traceroute",
+                    output = "Erreur : ${e.message}",
                     isError = true
                 )
             } finally {
@@ -343,12 +378,12 @@ class NetworkToolsViewModel : ViewModel() {
     }
 
     /**
-     * Execute une commande nmap avec les options choisies sur l hôte fourni
+     * Execute une commande nmap avec les options choisies sur l'hôte fourni
      *
      * Recupere la sortie et met a jour les résultats
      *
-     * @param host adresse IP ou nom d hôte cible
-     * @param parameters les options choisies par l utilisateur (ex: -sV -T4)
+     * @param host adresse IP ou nom d'hôte cible
+     * @param parameters les options choisies par l'utilisateur (ex: -sV -T4)
      */
 
 
@@ -389,7 +424,7 @@ class NetworkToolsViewModel : ViewModel() {
                 }
                 outputThread.start()
 
-                // Lire la sortie d erreur
+                // Lire la sortie d'erreur
                 val errorThread = Thread {
                     var line: String?
                     while (errorReader.readLine().also { line = it } != null) {
@@ -414,10 +449,11 @@ class NetworkToolsViewModel : ViewModel() {
                     }
                 }
                 
+                // Attendre que les threads se terminent
                 outputThread.join(2000)
                 errorThread.join(2000)
                 
-                
+                // Si pas de sortie, ajouter un message
                 if (output.toString().trim().isEmpty() || output.toString().trim() == "Commande exécutée : $fullCommand") {
                     output.append("Aucune sortie détectée. Vérifiez que nmap fonctionne correctement.\n")
                 }
@@ -431,7 +467,7 @@ class NetworkToolsViewModel : ViewModel() {
                 val message = if (e.message?.contains("No such file") == true || e.message?.contains("not found") == true) {
                     "Erreur : le binaire nmap n'a pas été trouvé ou copié. Vérifiez sa présence dans les assets."
                 } else {
-                    e.message ?: "Erreur lors de l exécution de nmap"
+                    e.message ?: "Erreur lors de l'exécution de nmap"
                 }
                 _results.value = _results.value + NetworkResult(
                     command = "nmap $parameters $host",
