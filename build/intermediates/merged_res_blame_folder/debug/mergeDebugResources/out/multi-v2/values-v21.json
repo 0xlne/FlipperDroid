@@ -4,7 +4,7 @@
             "outputFile": "com.example.flipperdroid-mergeDebugResources-50:/values-v21/values-v21.xml",
             "map": [
                 {
-                    "source": "/home/kaliznoo/.gradle/caches/8.11.1/transforms/325c613271512ff9ca88fc378ecb97ee/transformed/core-1.13.1/res/values-v21/values-v21.xml",
+                    "source": "/home/kiri/.gradle/caches/8.11.1/transforms/325c613271512ff9ca88fc378ecb97ee/transformed/core-1.13.1/res/values-v21/values-v21.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,13",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4",
