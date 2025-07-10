@@ -40,16 +40,9 @@ The application includes modules for scanning, analyzing, and emulating NFC, Blu
 
 ---
 
-## Installation
-
-### Available via F-Droid
-
-The application is published on F-Droid and other open-source platforms for Android.
-
 ### Requirements
 
 - Android 10 or newer
-- Root access recommended for advanced features (but not mandatory)
 - Tested with LineageOS on a rooted Google Pixel 7
 
 ---
