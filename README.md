@@ -5,6 +5,7 @@
 <p align="center">
   <img src="https://github.com/Jeremiznoo/FlipperDroid/blob/main/src/main/ic_launcher-playstore.png">
 </p>
+
 ---
 
 ## Overview
