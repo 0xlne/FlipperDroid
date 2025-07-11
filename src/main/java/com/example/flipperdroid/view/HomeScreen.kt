@@ -57,13 +57,10 @@ fun HomeScreen(
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences("legal_prefs", Context.MODE_PRIVATE) }
     var legalAccepted by remember { mutableStateOf(prefs.getBoolean("legalAccepted", false)) }
-    var showCGU by remember { mutableStateOf(false) }
-    var showMIT by remember { mutableStateOf(false) }
-    var showMentions by remember { mutableStateOf(false) }
 
     if (!legalAccepted) {
         AlertDialog(
-            onDismissRequest = {}, // Blocking
+            onDismissRequest = {},
             title = { Text("Legal information required") },
             text = {
                 Column {
@@ -85,37 +82,6 @@ fun HomeScreen(
             dismissButton = {}
         )
     }
-    if (showCGU) {
-        AlertDialog(
-            onDismissRequest = { showCGU = false },
-            title = { Text("CGU - Exemple") },
-            text = { Text("Voici un exemple de Conditions Générales d'Utilisation. Remplace ce texte par tes propres CGU.") },
-            confirmButton = {
-                TextButton(onClick = { showCGU = false }) { Text("Fermer") }
-            }
-        )
-    }
-    if (showMIT) {
-        AlertDialog(
-            onDismissRequest = { showMIT = false },
-            title = { Text("Licence MIT - Exemple") },
-            text = { Text("MIT License\n\nCopyright (c) 2024\n\nPermission is hereby granted, free of charge, to any person obtaining a copy ... (remplace par le texte complet de la licence)") },
-            confirmButton = {
-                TextButton(onClick = { showMIT = false }) { Text("Fermer") }
-            }
-        )
-    }
-    if (showMentions) {
-        AlertDialog(
-            onDismissRequest = { showMentions = false },
-            title = { Text("Mentions légales - Exemple") },
-            text = { Text("Voici un exemple de mentions légales. Remplace ce texte par tes propres mentions légales.") },
-            confirmButton = {
-                TextButton(onClick = { showMentions = false }) { Text("Fermer") }
-            }
-        )
-    }
-
     val features = listOf(
         FeatureItem("NFC Reader", Icons.Default.Nfc, "nfc"),
         FeatureItem("BadUSB", Icons.Default.Usb, "badusb"),
