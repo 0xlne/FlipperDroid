@@ -1,28 +1,18 @@
 Legal Notice
 
-1. Application Publisher
+Application Publisher
+
 Application Name: FlipperDroid®
 
-Publisher(s): DIAZ Jérémy, CORRET Bryan, PREVOT Louis, IMBERDIS Adrien
+Publisher(s): jeremiznoo
 
 Legal Status: Volunteer-based
-
-Registered Office Address: 1 Rue du 19 Mars 1962, 92230 Gennevilliers, France
-
-SIRET: None
-
-Publication Director: DIAZ Jérémy
-
-Contact Email: contact@flipperdroid.com
-
-2. Hosting
-Host: F-Droid
 
 Address: None
 
 Phone: None
 
-Website: https://f-droid.org/en/about/
+Website: https://github.com/Jeremiznoo/FlipperDroid
 
 3. Terms of Use
 The use of the application is governed by the Terms of Use (ToU).

@@ -124,7 +124,7 @@ fun AboutScreen(navController: NavController) {
                         verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            "Jérémy • Bryan • Louis • Adrien",
+                            "Jeremy D.",
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
